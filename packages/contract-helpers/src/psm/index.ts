@@ -1,4 +1,4 @@
-import { providers } from 'ethers';
+import { providers, BigNumber } from 'ethers';
 import BaseService from '../commons/BaseService';
 import {
     eEthereumTxType,
@@ -57,5 +57,46 @@ export class PsmService
                 gas: this.generateTxPriceEstimation([], txCallback),
             },
         ];
+    }
+
+    @PsmValidator
+    public sellGem(
+        @isEthAddress('userAddress')
+        @isEthAddress('usr')
+        { userAddress, usr, gemAmt }: PsmParamsType,
+    ): EthereumTransactionTypeExtended[] {
+        const psmContract = this.getContractInstance(this.psmAddress);
+        const txCallback: () => Promise<transactionType> = this.generateTxCallback({
+            rawTxMethod: async () =>
+                psmContract.populateTransaction.sellGem(usr, gemAmt),
+            from: userAddress,
+            value: DEFAULT_NULL_VALUE_ON_TX,
+        });
+
+        return [
+            {
+                tx: txCallback,
+                txType: eEthereumTxType.PSM_ACTION,
+                gas: this.generateTxPriceEstimation([], txCallback),
+            },
+        ];
+    }
+
+    @PsmValidator
+    public async gemJoin(): Promise<string> {
+        const psmContract = this.getContractInstance(this.psmAddress);
+        return await psmContract.gemJoin();
+    }
+
+    @PsmValidator
+    public async tin(): Promise<BigNumber> {
+        const psmContract = this.getContractInstance(this.psmAddress);
+        return await psmContract.tin();
+    }
+
+    @PsmValidator
+    public async tout(): Promise<BigNumber> {
+        const psmContract = this.getContractInstance(this.psmAddress);
+        return await psmContract.tout();
     }
 }
