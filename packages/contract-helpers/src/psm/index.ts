@@ -81,7 +81,7 @@ export class PsmService extends BaseService<DssPsm> implements PsmInterface {
         txs.push({
             tx: txCallback,
             txType: eEthereumTxType.PSM_ACTION,
-            gas: this.generateTxPriceEstimation([], txCallback),
+            gas: this.generateTxPriceEstimation(txs, txCallback),
         });
         return txs;
     }
@@ -124,7 +124,7 @@ export class PsmService extends BaseService<DssPsm> implements PsmInterface {
         txs.push({
             tx: txCallback,
             txType: eEthereumTxType.PSM_ACTION,
-            gas: this.generateTxPriceEstimation([], txCallback),
+            gas: this.generateTxPriceEstimation(txs, txCallback),
         });
         return txs;
     }
