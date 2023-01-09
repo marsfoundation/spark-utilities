@@ -60,8 +60,7 @@ type StakingServiceConfig = {
 
 export class StakingService
   extends BaseService<IStakedToken>
-  implements StakingInterface
-{
+  implements StakingInterface {
   readonly stakingHelperContract: IAaveStakingHelper;
 
   public readonly stakingContractAddress: tEthereumAddress;
