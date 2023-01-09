@@ -29,8 +29,7 @@ export interface FaucetInterface {
 
 export class FaucetService
   extends BaseService<IFaucet>
-  implements FaucetInterface
-{
+  implements FaucetInterface {
   readonly faucetAddress: string;
 
   readonly faucetConfig: LendingPoolMarketConfig | undefined;
