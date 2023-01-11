@@ -2,9 +2,16 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
-import type { DssPsm, DssPsmInterface } from "./DssPsm";
+import { Contract, Signer } from "ethers";
+import { Provider } from "@ethersproject/providers";
+
+import type { DssPsm } from "./DssPsm";
+
+export class DssPsm__factory {
+  static connect(address: string, signerOrProvider: Signer | Provider): DssPsm {
+    return new Contract(address, _abi, signerOrProvider) as DssPsm;
+  }
+}
 
 const _abi = [
   {
@@ -352,14 +359,4 @@ const _abi = [
     stateMutability: "view",
     type: "function",
   },
-] as const;
-
-export class DssPsm__factory {
-  static readonly abi = _abi;
-  static createInterface(): DssPsmInterface {
-    return new utils.Interface(_abi) as DssPsmInterface;
-  }
-  static connect(address: string, signerOrProvider: Signer | Provider): DssPsm {
-    return new Contract(address, _abi, signerOrProvider) as DssPsm;
-  }
-}
+];

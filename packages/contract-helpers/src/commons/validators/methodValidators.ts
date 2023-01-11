@@ -619,12 +619,6 @@ export function PsmValidator(
 ): any {
   const method = descriptor.value;
   descriptor.value = function () {
-    // @ts-expect-error todo: check why this ignore is needed
-    if (!utils.isAddress(this.psmAddress) || !utils.isAddress(this.tokenAddress) || !utils.isAddress(this.daiAddress)) {
-      console.error(`[PsmValidator] You need to pass valid addresses`);
-      return [];
-    }
-
     isEthAddressValidator(target, propertyName, arguments);
 
     amountGtThan0Validator(target, propertyName, arguments);

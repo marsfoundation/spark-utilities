@@ -12,6 +12,7 @@ import { isEthAddress } from '../commons/validators/paramValidators';
 import { DssPsm } from './typechain/DssPsm';
 import { DssPsm__factory } from './typechain/DssPsm__factory';
 import { ERC20Service, IERC20ServiceInterface } from '../erc20-contract';
+import { ChainlogService, ChainlogServiceInterface } from '../chainlog-contract';
 
 export type PsmParamsType = {
     userAddress: tEthereumAddress;
@@ -19,7 +20,7 @@ export type PsmParamsType = {
     gemAmt: tEthereumAddress;
 };
 
-export interface PsmInterface {
+export interface PsmServiceInterface {
     buyGem: (args: PsmParamsType) => Promise<EthereumTransactionTypeExtended[]>;
     sellGem: (args: PsmParamsType) => Promise<EthereumTransactionTypeExtended[]>;
     gemJoin: () => Promise<string>;
@@ -27,19 +28,28 @@ export interface PsmInterface {
     tout: () => Promise<BigNumber>;
 }
 
-export class PsmService extends BaseService<DssPsm> implements PsmInterface {
-    readonly psmAddress: string;
-    readonly tokenAddress: string;
-    readonly daiAddress: string;
+export class PsmService extends BaseService<DssPsm> implements PsmServiceInterface {
+    readonly chainlogService: ChainlogServiceInterface;
     readonly erc20Service: IERC20ServiceInterface;
+    readonly name: string;
+    psmAddress: string;
+    tokenAddress: string;
+    daiAddress: string;
 
-    constructor(provider: providers.Provider, psmAddress?: string, tokenAddress?: string, daiAddress?: string) {
+    constructor(provider: providers.Provider, chainlogAddress: string, name: string) {
         super(provider, DssPsm__factory);
 
-        this.psmAddress = psmAddress ?? '';
-        this.tokenAddress = tokenAddress ?? '';
-        this.daiAddress = daiAddress ?? '';
+        this.chainlogService = new ChainlogService(provider, chainlogAddress);
         this.erc20Service = new ERC20Service(provider);
+        this.name = name;
+    }
+
+    async loadContracts(): Promise<void> {
+        if (this.psmAddress) return;
+
+        this.psmAddress = await this.chainlogService.getAddress(`MCD_PSM_${this.name}_A`);
+        this.tokenAddress = await this.chainlogService.getAddress(this.name);
+        this.daiAddress = await this.chainlogService.getAddress('MCD_DAI');
     }
 
     @PsmValidator
@@ -48,6 +58,8 @@ export class PsmService extends BaseService<DssPsm> implements PsmInterface {
         @isEthAddress('usr')
         { userAddress, usr, gemAmt }: PsmParamsType,
     ): Promise<EthereumTransactionTypeExtended[]> {
+        await this.loadContracts();
+
         const txs: EthereumTransactionTypeExtended[] = [];
         const psmContract = this.getContractInstance(this.psmAddress);
         const { decimalsOf, isApproved, approve } = this.erc20Service;
@@ -92,6 +104,8 @@ export class PsmService extends BaseService<DssPsm> implements PsmInterface {
         @isEthAddress('usr')
         { userAddress, usr, gemAmt }: PsmParamsType,
     ): Promise<EthereumTransactionTypeExtended[]> {
+        await this.loadContracts();
+
         const txs: EthereumTransactionTypeExtended[] = [];
         const psmContract = this.getContractInstance(this.psmAddress);
         const { decimalsOf, isApproved, approve } = this.erc20Service;
@@ -131,18 +145,24 @@ export class PsmService extends BaseService<DssPsm> implements PsmInterface {
 
     @PsmValidator
     public async gemJoin(): Promise<string> {
+        await this.loadContracts();
+
         const psmContract = this.getContractInstance(this.psmAddress);
         return psmContract.gemJoin();
     }
 
     @PsmValidator
     public async tin(): Promise<BigNumber> {
+        await this.loadContracts();
+
         const psmContract = this.getContractInstance(this.psmAddress);
         return psmContract.tin();
     }
 
     @PsmValidator
     public async tout(): Promise<BigNumber> {
+        await this.loadContracts();
+
         const psmContract = this.getContractInstance(this.psmAddress);
         return psmContract.tout();
     }

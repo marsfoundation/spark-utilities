@@ -25,7 +25,8 @@ export * from './synthetix-contract';
 export * from './baseDebtToken-contract';
 export * from './v3-migration-contract';
 export * from './erc20-2612';
-export * from './psm';
+export * from './chainlog-contract';
+export * from './psm-contract';
 
 // commons
 export * from './commons/types';
