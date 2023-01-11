@@ -1,8 +1,8 @@
 {
-  "name": "@aave/aave-utilities",
+  "name": "@hexonaut/spark-utilities",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aave/aave-utilities.git"
+    "url": "https://github.com/hexonaut/spark-utilities.git"
   },
   "private": true,
   "license": "MIT",
