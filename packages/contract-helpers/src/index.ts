@@ -27,6 +27,7 @@ export * from './v3-migration-contract';
 export * from './erc20-2612';
 export * from './chainlog-contract';
 export * from './psm-contract';
+export * from './pot-contract';
 
 // commons
 export * from './commons/types';
