@@ -23,6 +23,7 @@ export class PotService extends BaseService<PotAbstract> implements PotServiceIn
     }
 
     public async getDaiSavingsRate(): Promise<BigNumber> {
+        BigNumber.config({ POW_PRECISION: 100 });   // Without this the computation will take too long
         const potContract = this.getContractInstance(this.potAddress);
         const dsr = new BigNumber((await potContract.dsr())._hex).div(1e27);
         return dsr.pow(60 * 60 * 24 * 365).minus(1);
