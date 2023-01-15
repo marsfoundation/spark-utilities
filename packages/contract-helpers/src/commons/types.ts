@@ -92,6 +92,7 @@ export enum eEthereumTxType {
   V3_MIGRATION_ACTION = 'V3_MIGRATION_ACTION',
   FAUCET_V2_MINT = 'FAUCET_V2_MINT',
   PSM_ACTION = 'PSM_ACTION',
+  SAVINGS_DAI_ACTION = 'SAVINGS_DAI_ACTION',
 }
 
 export enum ProtocolAction {

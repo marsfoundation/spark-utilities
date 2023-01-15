@@ -5,6 +5,7 @@ import { PotAbstract } from './typechain/PotAbstract';
 import { PotAbstract__factory } from './typechain/PotAbstract__factory';
 
 export interface PotServiceInterface {
+    getChi: () => Promise<BigNumber>;
     getDaiSavingsRate: () => Promise<BigNumber>;
 }
 

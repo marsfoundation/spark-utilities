@@ -17,7 +17,7 @@ import { ChainlogService, ChainlogServiceInterface } from '../chainlog-contract'
 export type PsmParamsType = {
     userAddress: tEthereumAddress;
     usr: tEthereumAddress;
-    gemAmt: tEthereumAddress;
+    gemAmt: string;
 };
 
 export interface PsmServiceInterface {

@@ -28,6 +28,7 @@ export * from './erc20-2612';
 export * from './chainlog-contract';
 export * from './psm-contract';
 export * from './pot-contract';
+export * from './savings-dai-contract';
 
 // commons
 export * from './commons/types';
