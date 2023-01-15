@@ -54,8 +54,9 @@ export class SavingsDaiService extends BaseService<ISavingsDai> implements Savin
 
     @SavingsDaiValidator
     public async previewDeposit(assets: string): Promise<BigNumber> {
+        const convertedAmount: string = valueToWei(assets, 18);
         const savingsDaiContract = this.getContractInstance(this.savingsDaiAddress);
-        return new BigNumber((await savingsDaiContract.previewDeposit(assets))._hex).div(1e18);
+        return new BigNumber((await savingsDaiContract.previewDeposit(convertedAmount))._hex).div(1e18);
     }
 
     @SavingsDaiValidator
@@ -103,8 +104,9 @@ export class SavingsDaiService extends BaseService<ISavingsDai> implements Savin
 
     @SavingsDaiValidator
     public async previewRedeem(shares: string): Promise<BigNumber> {
+        const convertedAmount: string = valueToWei(shares, 18);
         const savingsDaiContract = this.getContractInstance(this.savingsDaiAddress);
-        return new BigNumber((await savingsDaiContract.previewRedeem(shares))._hex).div(1e18);
+        return new BigNumber((await savingsDaiContract.previewRedeem(convertedAmount))._hex).div(1e18);
     }
 
     @SavingsDaiValidator
