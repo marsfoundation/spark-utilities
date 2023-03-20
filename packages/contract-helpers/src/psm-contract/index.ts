@@ -1,4 +1,5 @@
-import { providers, BigNumber } from 'ethers';
+import { providers } from 'ethers';
+import BigNumber from 'bignumber.js';
 import BaseService from '../commons/BaseService';
 import {
     eEthereumTxType,
@@ -156,7 +157,7 @@ export class PsmService extends BaseService<DssPsm> implements PsmServiceInterfa
         await this.loadContracts();
 
         const psmContract = this.getContractInstance(this.psmAddress);
-        return psmContract.tin();
+        return new BigNumber((await psmContract.tin())._hex).div(1e18).plus(1);
     }
 
     @PsmValidator
@@ -164,6 +165,6 @@ export class PsmService extends BaseService<DssPsm> implements PsmServiceInterfa
         await this.loadContracts();
 
         const psmContract = this.getContractInstance(this.psmAddress);
-        return psmContract.tout();
+        return new BigNumber((await psmContract.tout())._hex).div(1e18).plus(1);
     }
 }
