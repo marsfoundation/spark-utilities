@@ -75,7 +75,7 @@ export class SavingsDaiService extends BaseService<ISavingsDai> implements Savin
             token: this.daiAddress,
             user: userAddress,
             spender: this.savingsDaiAddress,
-            amount: convertedAmount,
+            amount: assets,
         });
         if (!approved) {
             const approveTx = approve({
