@@ -66,13 +66,11 @@ export class PsmService extends BaseService<DssPsm> implements PsmServiceInterfa
         const { decimalsOf, isApproved, approve } = this.erc20Service;
         const decimals: number = await decimalsOf(this.tokenAddress);
         const convertedAmount: string = valueToWei(gemAmt, decimals);
-        const decimalsDai: number = await decimalsOf(this.daiAddress);
-        const convertedAmountDai: string = valueToWei(gemAmt, decimalsDai);
         const approved: boolean = await isApproved({
             token: this.daiAddress,
             user: userAddress,
             spender: this.psmAddress,
-            amount: convertedAmountDai,
+            amount: gemAmt,
         });
         if (!approved) {
             const approveTx = approve({
@@ -117,7 +115,7 @@ export class PsmService extends BaseService<DssPsm> implements PsmServiceInterfa
             token: this.tokenAddress,
             user: userAddress,
             spender: gemJoinAddress,
-            amount: convertedAmount,
+            amount: gemAmt,
         });
         if (!approved) {
             const approveTx = approve({
